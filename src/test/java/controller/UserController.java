@@ -21,4 +21,12 @@ public class UserController extends Setup {
                 .when()
                 .get("/api/user/" + userId);
     }
+    public Response updateUser(String userId, String token, String updatedBodyJson) {
+        return given()
+                .spec(reqSpec)
+                .header("Authorization", "Bearer " + token)
+                .body(updatedBodyJson)
+                .when()
+                .put("/api/user/" + userId);
+    }
 }
