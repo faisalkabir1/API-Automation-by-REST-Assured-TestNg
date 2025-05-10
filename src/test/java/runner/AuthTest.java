@@ -7,6 +7,11 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class AuthTest extends Setup {
 
     AuthController auth = new AuthController();
@@ -28,19 +33,32 @@ public class AuthTest extends Setup {
     }
 
     @Test(priority = 2)
-    public void loginAsAdmin() {
+    public void loginAsAdmin() throws IOException {
         Response res = auth.adminLogin("admin@test.com", "admin123");
         Assert.assertEquals(res.statusCode(), 200);
         adminToken = res.jsonPath().get("token");
-        System.out.println(adminToken);
+     //   System.out.println(adminToken);
+        updateProperty("adminToken", adminToken);
     }
 
     @Test(priority = 3, dependsOnMethods = "registerNewUser")
-    public void loginAsUser() {
+    public void loginAsUser() throws IOException {
         Response res = auth.userLogin(userEmail, "1234");
         Assert.assertEquals(res.statusCode(), 200);
         userToken = res.jsonPath().get("token");
-        System.out.println(userToken);
+      //  System.out.println(userToken);
+        updateProperty("adminToken", adminToken);
 
+    }
+    private void updateProperty(String key, String value) throws IOException {
+        Properties props = new Properties();
+        FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
+        props.load(fis);
+        fis.close();
+
+        props.setProperty(key, value);
+        FileOutputStream fos = new FileOutputStream("src/test/resources/config.properties");
+        props.store(fos, null);
+        fos.close();
     }
 }

@@ -3,8 +3,6 @@ package controller;
 import config.Setup;
 import Model.UserModel;
 import io.restassured.response.Response;
-
-import static config.Setup.reqSpec;
 import static io.restassured.RestAssured.given;
 
 public class AuthController extends Setup {
