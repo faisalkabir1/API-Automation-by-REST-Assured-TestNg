@@ -43,11 +43,12 @@ public class AuthTest extends Setup {
 
         Response res = auth.register(user);
         Assert.assertEquals(res.statusCode(), 201);
+
         userEmail = res.jsonPath().get("email");
         userId = res.jsonPath().get("_id");
-        updateProperty("userId", userId);
-        updateProperty("userToken", userToken);
 
+        updateProperty("user_email", userEmail);
+        updateProperty("userId", userId);
     }
 
     @Test(priority = 2)
