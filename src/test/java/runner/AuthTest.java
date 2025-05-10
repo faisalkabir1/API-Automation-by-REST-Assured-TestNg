@@ -21,7 +21,7 @@ public class AuthTest extends Setup {
     public static String adminToken;
 
     @Test(priority = 1)
-    public void registerNewUser() {
+    public void registerNewUser() throws IOException {
         UserModel user = new UserModel("John", "Doe", "john" + System.currentTimeMillis() + "@gmail.com",
                 "1234", "01700000000", "Dhaka", "Male", true);
 
@@ -29,6 +29,7 @@ public class AuthTest extends Setup {
         Assert.assertEquals(res.statusCode(), 201);
         userEmail = res.jsonPath().get("email");
         userId = res.jsonPath().get("_id");
+        updateProperty("adminToken", userId);
 
     }
 
