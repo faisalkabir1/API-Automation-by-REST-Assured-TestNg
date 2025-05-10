@@ -46,9 +46,10 @@ public class AuthTest extends Setup {
 
         userEmail = res.jsonPath().get("email");
         userId = res.jsonPath().get("_id");
-
+        userToken = res.jsonPath().get("token");
         updateProperty("user_email", userEmail);
         updateProperty("userId", userId);
+        updateProperty("userToken", userToken);
     }
 
     @Test(priority = 2)
