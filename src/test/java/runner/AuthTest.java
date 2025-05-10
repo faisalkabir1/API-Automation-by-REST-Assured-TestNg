@@ -20,7 +20,7 @@ public class AuthTest extends Setup {
     public static String userId;
     public static String userToken;
     public static String adminToken;
-
+    Properties props = new Properties();
     @Test(priority = 1)
     public void registerNewUser() throws IOException {
         Faker faker = new Faker();
@@ -47,12 +47,41 @@ public class AuthTest extends Setup {
         userEmail = res.jsonPath().get("email");
         userId = res.jsonPath().get("_id");
         userToken = res.jsonPath().get("token");
+        String mail = res.jsonPath().get("email");
         updateProperty("user_email", userEmail);
         updateProperty("userId", userId);
         updateProperty("userToken", userToken);
     }
 
     @Test(priority = 2)
+    public void registerExistingMail() throws IOException {
+        Faker faker = new Faker();
+        loadProps();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String Oldemail = props.getProperty("user_email");
+        String phone = faker.phoneNumber().subscriberNumber(11);
+        String address = faker.address().streetAddress();
+
+        UserModel user = new UserModel(
+                firstName,
+                lastName,
+                Oldemail,
+                "1234",
+                phone,
+                address,
+                "Male",
+                true);
+
+        Response res = auth.register(user);
+      //  Assert.assertEquals(res.statusCode(), 400);
+        String message = res.jsonPath().getString("message");
+        Assert.assertTrue(message.contains("User already exists with this email address"),
+                "Expected error message not found. Actual: " + message);
+
+    }
+
+    @Test(priority = 3)
     public void loginAsAdmin() throws IOException {
         Response res = auth.adminLogin("admin@test.com", "admin123");
         Assert.assertEquals(res.statusCode(), 200);
@@ -61,7 +90,7 @@ public class AuthTest extends Setup {
         updateProperty("adminToken", adminToken);
     }
 
-    @Test(priority = 3, dependsOnMethods = "registerNewUser")
+    @Test(priority = 4, dependsOnMethods = "registerNewUser")
     public void loginAsUser() throws IOException {
         Response res = auth.userLogin(userEmail, "1234");
         Assert.assertEquals(res.statusCode(), 200);
@@ -81,5 +110,10 @@ public class AuthTest extends Setup {
         FileOutputStream fos = new FileOutputStream("src/test/resources/config.properties");
         props.store(fos, null);
         fos.close();
+    }
+    private void loadProps() throws IOException {
+        FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
+        props.load(fis);
+        fis.close();
     }
 }
