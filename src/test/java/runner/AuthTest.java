@@ -1,5 +1,6 @@
 package runner;
 
+import com.github.javafaker.Faker;
 import config.Setup;
 import controller.AuthController;
 import Model.UserModel;
@@ -22,14 +23,30 @@ public class AuthTest extends Setup {
 
     @Test(priority = 1)
     public void registerNewUser() throws IOException {
-        UserModel user = new UserModel("John", "Doe", "john" + System.currentTimeMillis() + "@gmail.com",
-                "1234", "01700000000", "Dhaka", "Male", true);
+        Faker faker = new Faker();
+
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String email = firstName.toLowerCase() + System.currentTimeMillis() + "@gmail.com";
+        String phone = faker.phoneNumber().subscriberNumber(11);
+        String address = faker.address().streetAddress();
+
+        UserModel user = new UserModel(
+                firstName,
+                lastName,
+                email,
+                "1234",
+                phone,
+                address,
+                "Male",
+                true);
 
         Response res = auth.register(user);
         Assert.assertEquals(res.statusCode(), 201);
         userEmail = res.jsonPath().get("email");
         userId = res.jsonPath().get("_id");
         updateProperty("userId", userId);
+        updateProperty("userToken", userToken);
 
     }
 
@@ -51,6 +68,7 @@ public class AuthTest extends Setup {
         updateProperty("adminToken", adminToken);
 
     }
+
     private void updateProperty(String key, String value) throws IOException {
         Properties props = new Properties();
         FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
