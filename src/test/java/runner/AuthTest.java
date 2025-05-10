@@ -29,7 +29,7 @@ public class AuthTest extends Setup {
         Assert.assertEquals(res.statusCode(), 201);
         userEmail = res.jsonPath().get("email");
         userId = res.jsonPath().get("_id");
-        updateProperty("adminToken", userId);
+        updateProperty("userId", userId);
 
     }
 
