@@ -63,10 +63,9 @@ The captured APIs were automated using **Rest Assured** in Java. The project inc
 
 ---
 ## ▶️ How to Run This Project
-
 ### 🛠 Requirements
 - Java 8+
-- Maven
+- Gradle
 - Git
 - Allure CLI
 - Internet access
@@ -80,19 +79,14 @@ The captured APIs were automated using **Rest Assured** in Java. The project inc
 git clone https://github.com/your-username/daily-finance-api-automation.git
 cd daily-finance-api-automation
 
-# 2. Build the project
-mvn clean install
+# 2. Build the project and run tests with specific suite
+gradle clean test -PsuiteName="suite.xml"
 
-# 3. (Optional) Update config.properties if needed (e.g., base URL, credentials)
+# 3. Generate Allure report
+allure generate allure-results --clean -o allure-report
 
-# 4. Run all tests
-mvn test
-
-# To run a specific test class
-mvn -Dtest=ClassName test
-
-# 5. Generate and view Allure report
-allure serve target/allure-results
+# 4. Serve Allure report in browser
+allure serve allure-results
 ```
 ## 👨‍💻 Author
 
