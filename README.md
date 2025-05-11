@@ -29,7 +29,8 @@ Using browser Developer Tools → Network tab, the following API interactions we
 All tests are integrated with **Allure Reporting**.
 
 📸 **Allure Report Screenshot:**
-
+![image](https://github.com/user-attachments/assets/5ddd2a0d-ed98-4605-8d02-9d29efb39160)
+![image](https://github.com/user-attachments/assets/702e4f9f-5d51-4963-9662-88b85efefea6)
 
 ---
 
