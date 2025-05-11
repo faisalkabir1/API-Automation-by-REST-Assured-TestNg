@@ -35,6 +35,17 @@ public class UserTest extends Setup {
         Assert.assertEquals(res.statusCode(), 200);
     }
     @Test(priority = 3)
+    public void searchUserByInvalidId() throws IOException {
+        loadProps();
+        String token = props.getProperty("adminToken");
+        String userId = props.getProperty("invalidId1234");
+
+        Response res = userController.getUserById(userId, token);
+        Assert.assertEquals(res.statusCode(), 404);
+        String message = res.jsonPath().getString("message");
+        Assert.assertTrue(message.contains("User not found"), "Unexpected error message");
+    }
+    @Test(priority = 3)
     public void editUserInfo() throws IOException {
         loadProps();
         String token = props.getProperty("adminToken");
