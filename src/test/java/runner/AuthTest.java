@@ -89,14 +89,33 @@ public class AuthTest extends Setup {
      //   System.out.println(adminToken);
         updateProperty("adminToken", adminToken);
     }
+    @Test(priority = 3)
+    public void loginAsInvalidAdmin() throws IOException {
+        Response res = auth.adminLogin("admininvalid@test.com", "admin123");
+
+        // Assert the status code is 401 for unauthorized login
+        Assert.assertEquals(res.statusCode(), 401, "Expected 401 Unauthorized for invalid admin login");
+
+        // Extract and assert error message
+        String message = res.jsonPath().getString("message");
+        Assert.assertTrue(message.contains("Invalid email or password"), "Unexpected error message");
+
+    }
 
     @Test(priority = 4, dependsOnMethods = "registerNewUser")
     public void loginAsUser() throws IOException {
         Response res = auth.userLogin(userEmail, "1234");
         Assert.assertEquals(res.statusCode(), 200);
-        userToken = res.jsonPath().get("token");
-      //  System.out.println(userToken);
-        updateProperty("adminToken", adminToken);
+
+    }
+    @Test(priority = 4)
+    public void loginAsUserWithWrongCred() throws IOException {
+        Response res = auth.userLogin("invalidemail123@gmail.com", "invalidpass123");
+
+        Assert.assertEquals(res.statusCode(), 401, "Expected 401 Unauthorized for invalid admin login");
+
+        String message = res.jsonPath().getString("message");
+        Assert.assertTrue(message.contains("Invalid email or password"), "Unexpected error message");
 
     }
 
