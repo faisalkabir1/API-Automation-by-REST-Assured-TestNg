@@ -21,7 +21,7 @@ public class AuthTest extends Setup {
     public static String userToken;
     public static String adminToken;
     Properties props = new Properties();
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Register new user with valid data")
     public void registerNewUser() throws IOException {
         Faker faker = new Faker();
 
@@ -53,7 +53,7 @@ public class AuthTest extends Setup {
         updateProperty("userToken", userToken);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Try to register new user with previous email")
     public void registerExistingMail() throws IOException {
         Faker faker = new Faker();
         loadProps();
@@ -81,7 +81,7 @@ public class AuthTest extends Setup {
 
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Login as Admin with valid data")
     public void loginAsAdmin() throws IOException {
         Response res = auth.adminLogin("admin@test.com", "admin123");
         Assert.assertEquals(res.statusCode(), 200);
@@ -89,7 +89,7 @@ public class AuthTest extends Setup {
      //   System.out.println(adminToken);
         updateProperty("adminToken", adminToken);
     }
-    @Test(priority = 3)
+    @Test(priority = 4, description = "Try Login as Admin with invalid credential data")
     public void loginAsInvalidAdmin() throws IOException {
         Response res = auth.adminLogin("admininvalid@test.com", "admin123");
 
@@ -102,13 +102,13 @@ public class AuthTest extends Setup {
 
     }
 
-    @Test(priority = 4, dependsOnMethods = "registerNewUser")
+    @Test(priority = 5, dependsOnMethods = "registerNewUser", description = "Login as new user with valid data")
     public void loginAsUser() throws IOException {
         Response res = auth.userLogin(userEmail, "1234");
         Assert.assertEquals(res.statusCode(), 200);
 
     }
-    @Test(priority = 4)
+    @Test(priority = 6, description = "Login as User with invalid data")
     public void loginAsUserWithWrongCred() throws IOException {
         Response res = auth.userLogin("invalidemail123@gmail.com", "invalidpass123");
 
