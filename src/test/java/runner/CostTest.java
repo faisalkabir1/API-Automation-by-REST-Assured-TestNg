@@ -72,6 +72,16 @@ public class CostTest extends Setup {
         Response res = costController.deleteItem(costId, token);
         Assert.assertEquals(res.statusCode(), 200);
     }
+@Test(priority = 5)
+    public void deleteItemWithwrongCostID() throws IOException {
+        loadProps();
+        String token = props.getProperty("userToken");
+        String costId = props.getProperty("invalidid123434");
+        Response res = costController.deleteItem(costId, token);
+        Assert.assertEquals(res.statusCode(), 404);
+        String message = res.jsonPath().getString("message");
+        Assert.assertTrue(message.contains("Cost not found"), "Unexpected error message");
+    }
 
     private void loadProps() throws IOException {
         FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
