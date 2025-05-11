@@ -17,7 +17,7 @@ public class CostTest extends Setup {
     Properties props = new Properties();
     String costId;
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Add Cost Item")
     public void addItem() throws IOException {
         loadProps();
         String token = props.getProperty("userToken");
@@ -39,7 +39,7 @@ public class CostTest extends Setup {
         updateProperty("costId", costId);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Get list of Items")
     public void getItems() throws IOException {
         loadProps();
         String token = props.getProperty("userToken");
@@ -48,7 +48,7 @@ public class CostTest extends Setup {
         Assert.assertEquals(res.statusCode(), 200);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Edit Item Name")
     public void editItem() throws IOException {
         loadProps();
         String token = props.getProperty("userToken");
@@ -63,7 +63,7 @@ public class CostTest extends Setup {
         Assert.assertEquals(res.statusCode(), 200);
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Delete Item with valid Cost Id")
     public void deleteItem() throws IOException {
         loadProps();
         String token = props.getProperty("userToken");
@@ -72,7 +72,7 @@ public class CostTest extends Setup {
         Response res = costController.deleteItem(costId, token);
         Assert.assertEquals(res.statusCode(), 200);
     }
-@Test(priority = 5)
+@Test(priority = 5, description = "Try to Delete Item with Invalid Cost Id")
     public void deleteItemWithwrongCostID() throws IOException {
         loadProps();
         String token = props.getProperty("userToken");

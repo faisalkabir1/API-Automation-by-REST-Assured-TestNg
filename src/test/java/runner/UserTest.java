@@ -16,7 +16,7 @@ public class UserTest extends Setup {
     UserController userController = new UserController();
     Properties props = new Properties();
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Get User List")
     public void getUserList() throws IOException {
         loadProps();
         String token = props.getProperty("adminToken");
@@ -25,7 +25,7 @@ public class UserTest extends Setup {
         Assert.assertEquals(res.statusCode(), 200);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Search by Valid User Id")
     public void searchUserById() throws IOException {
         loadProps();
         String token = props.getProperty("adminToken");
@@ -34,7 +34,7 @@ public class UserTest extends Setup {
         Response res = userController.getUserById(userId, token);
         Assert.assertEquals(res.statusCode(), 200);
     }
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Search by Invalid User Id")
     public void searchUserByInvalidId() throws IOException {
         loadProps();
         String token = props.getProperty("adminToken");
@@ -45,7 +45,7 @@ public class UserTest extends Setup {
         String message = res.jsonPath().getString("message");
         Assert.assertTrue(message.contains("User not found"), "Unexpected error message");
     }
-    @Test(priority = 3)
+    @Test(priority = 4, description = "Edit User Info")
     public void editUserInfo() throws IOException {
         loadProps();
         String token = props.getProperty("adminToken");
